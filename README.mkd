@@ -1,0 +1,3 @@
+A lightweight PHP syntax for vim. Works for me, probably won't work out of the
+box for you, as some tweaks for the syntax scheme probably will be needed as
+well.
