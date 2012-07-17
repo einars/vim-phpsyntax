@@ -19,13 +19,12 @@ endif
 
 syn sync clear
 
-runtime! syntax/html.vim
+"pure php for the win.
+"runtime! syntax/html.vim
 
 syn region phpComment  start="/\*" end="\*/" contained extend
 syn region phpComment  start=/\/\// end=/$/ contained oneline extend
 syn region phpComment  start=/#/ end=/$/ contained oneline extend
-" syn match phpComment  /#.\{-}\(?>\|$\)\@=/  contained
-" syn match phpComment  "//.\{-}\(?>\|$\)\@=" contained
 
 syn region phpFunctionDef matchgroup=phpKeyword start=/\vfunction\s/ end=/(/me=s-1 extend oneline contained
 syn region phpFunctionDef matchgroup=phpKeyword start=/\vclass\s/ end=/ / contained oneline
@@ -39,7 +38,6 @@ syn keyword phpKeyword if else while for switch elseif return die exit echo prin
 syn match phpFunction /\(\h\w*::\)\?\h\w*\s*(/me=e-1 contained display
 
 syn match phpIdentifier /$\h\w*/ contained display
-"syn match phpIdentifierInString /$\h\w*/ contained display
 syn match phpIdentifierInString /\v\$\h\w*(\-\>\w+)*/ contained display
 
 syn match phpSpecialChar  /\\[abcfnrtyv\\"$]/ contained display
@@ -48,20 +46,19 @@ syn match phpPrintfSpecifier /%[sSdx]/ contained display
 syn cluster phpDQStringInside contains=phpIdentifierInString,phpSpecialChar,phpPrintfSpecifier
 syn cluster phpSQStringInside contains=phpSpecialChar,phpPrintfSpecifier
 
-syn region phpString matchgroup=phpString start=/"/ skip=/\\./ end=/"/ contains=@phpDQStringInside contained extend keepend
-syn region phpString matchgroup=phpString start=/`/ skip=/\\./ end=/`/ contains=@phpDQStringInside contained extend keepend
-syn region phpString matchgroup=phpString start=/'/ skip=/\\./ end=/'/ contains=@phpSQStringInside contained extend keepend
-syn region phpString matchgroup=phpString start=/<<<\z(\I\i*\)/ end=/^\z1\(;\=$\)\@=/ contains=@phpDQStringInside contained extend keepend
+syn region phpString matchgroup=phpString start=/"/ end=/"/ skip=/\\./ contains=@phpDQStringInside contained extend keepend
+syn region phpString matchgroup=phpString start=/`/ end=/`/ skip=/\\./ contains=@phpDQStringInside contained extend keepend
+syn region phpString matchgroup=phpString start=/'/ end=/'/ skip=/\\./ contains=@phpSQStringInside contained extend keepend
+syn region phpString matchgroup=phpString start=/<<<\z([A-Z]\+\)/ end=/^\z1/ contains=@phpDQStringInside contained extend keepend
 "
 " indenting needs this
 syn match phpParent "[({[\]})]" contained display
 
 
 syn match phpCrapsticle /\v[;:]/ contained display
-" syn match phpGoodsticle /\v[\-+*/<>=\.]/ contained display
 
 syn region phpRegion  matchgroup=phpTag start=/<?\(php\)\=/ end=/?>/
-    \ contains=phpComment,phpParent,phpKeyword,phpFunction,phpString,phpFunctionDef,phpIdentifier,phpCrapsticle,phpGoodsticle keepend
+    \ contains=phpComment,phpParent,phpKeyword,phpFunction,phpString,phpFunctionDef,phpIdentifier,phpCrapsticle keepend
 
 
 " region sync is sometimes messy with html.vim
@@ -77,21 +74,19 @@ syn sync fromstart
 
 syn cluster htmlPreproc add=phpRegion
 
-hi def link phpRegion             Normal
 hi def link phpComment            Comment
-hi def link phpKeyword            Keyword
-hi def link phpFunction           Function
-hi def link phpString             String
-hi def link phpFunctionDef        Function
-hi def link phpIdentifier         Identifier
-hi def link phpIdentifierInString Identifier
-hi def link phpConstIdentifier    Identifier
-hi def link phpSpecialChar        Special
-hi def link phpPrintfSpecifier    Special
 
-hi def link phpGoodsticle         phpFunction
-hi def link phpRegion         phpKeyword
-hi def link phpParent         phpCrapsticle
+hi def link phpString             String
+
+hi def link phpKeyword            Normal
+hi def link phpCrapsticle         Normal
+hi def link phpFunction           Statement
+hi def link phpFunctionDef        Identifier
+hi def link phpIdentifier         Normal
+hi def link phpIdentifierInString Constant
+hi def link phpSpecialChar        Constant
+hi def link phpPrintfSpecifier    Constant
+hi def link phpConstIdentifier    Constant
 
 let b:current_syntax = "php"
 
